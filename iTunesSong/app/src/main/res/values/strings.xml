@@ -2,4 +2,5 @@
     <string name="app_name">iTunesSong</string>
     <string name="change_list">Переключить на таблицу или лист</string>
     <string name="empty_songsdata">Данные для поискового запроса отсутствуют!!!</string>
+    <string name="transition_image_track">image_track</string>
 </resources>

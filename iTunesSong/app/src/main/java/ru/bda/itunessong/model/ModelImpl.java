@@ -7,10 +7,6 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by User on 05.04.2017.
- */
-
 public class ModelImpl implements Model {
 
     ApiInterface apiInterface = ApiModule.getApiInterface();
