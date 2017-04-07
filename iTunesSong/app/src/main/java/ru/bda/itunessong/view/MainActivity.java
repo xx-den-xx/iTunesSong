@@ -1,27 +1,36 @@
 package ru.bda.itunessong.view;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ru.bda.itunessong.R;
+import ru.bda.itunessong.model.data.Result;
 import ru.bda.itunessong.model.data.SongsData;
 import ru.bda.itunessong.presenter.Presenter;
 import ru.bda.itunessong.presenter.SongListPresenter;
+import ru.bda.itunessong.view.adapters.OnElementClickListener;
 import ru.bda.itunessong.view.adapters.RecyclerViewAdapter;
 
 public class MainActivity extends AppCompatActivity implements View{
@@ -60,6 +69,12 @@ public class MainActivity extends AppCompatActivity implements View{
                 : RecyclerViewAdapter.VERTICAL_ORIENTATION;
         typeView = RecyclerViewAdapter.TABLE_TYPE;
         adapter.setLayoutType(orientation, typeView);
+        adapter.setOnElementClickListener(new OnElementClickListener() {
+            @Override
+            public void onElementClick(Result song, ImageView view) {
+                startActivity(song, view);
+            }
+        });
         layoutManager = new StaggeredGridLayoutManager(isLandscapeMode(MainActivity.this) ? 3 : 2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
@@ -78,10 +93,8 @@ public class MainActivity extends AppCompatActivity implements View{
                         typeView = RecyclerViewAdapter.TABLE_TYPE;
                         layoutManager = new StaggeredGridLayoutManager(isLandscapeMode(MainActivity.this) ? 3 : 2, StaggeredGridLayoutManager.VERTICAL);
                     }
-                    //adapter = new RecyclerViewAdapter(MainActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
                     adapter.setLayoutType(orientation, typeView);
-                    Log.d("log_table", typeView == RecyclerViewAdapter.TABLE_TYPE ? "TABLE" : "LIST");
                 }
                 return false;
             }
@@ -92,6 +105,12 @@ public class MainActivity extends AppCompatActivity implements View{
             public void onClick(android.view.View view) {
                 progressBar.setVisibility(android.view.View.VISIBLE);
                 presenter.onSearchButtonClick();
+                InputMethodManager inputManager =
+                        (InputMethodManager) MainActivity.this.
+                                getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(
+                        MainActivity.this.getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
     }
@@ -109,6 +128,22 @@ public class MainActivity extends AppCompatActivity implements View{
             }
             recyclerView.setLayoutManager(layoutManager);
             adapter.setLayoutType(orientation, typeView);
+        }
+    }
+
+
+    private void startActivity(Result song, ImageView sharedView) {
+        Intent intent = new Intent(MainActivity.this, SongActivity.class);
+        intent.putExtra("song", song);
+        intent.putExtra("trans_name", ViewCompat.getTransitionName(sharedView));
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                MainActivity.this,
+                sharedView,
+                ViewCompat.getTransitionName(sharedView));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            startActivity(intent, options.toBundle());
+        } else {
+            startActivity(intent);
         }
     }
 

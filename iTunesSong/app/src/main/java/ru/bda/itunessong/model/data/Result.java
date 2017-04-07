@@ -1,10 +1,11 @@
-
 package ru.bda.itunessong.model.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Result {
+import java.io.Serializable;
+
+public class Result implements Serializable{
 
     @SerializedName("wrapperType")
     @Expose
@@ -348,4 +349,40 @@ public class Result {
         this.isStreamable = isStreamable;
     }
 
+    @Override
+    public String toString() {
+        return "Result{" +
+                "wrapperType='" + wrapperType + '\'' +
+                ", kind='" + kind + '\'' +
+                ", artistId=" + artistId +
+                ", collectionId=" + collectionId +
+                ", trackId=" + trackId +
+                ", artistName='" + artistName + '\'' +
+                ", collectionName='" + collectionName + '\'' +
+                ", trackName='" + trackName + '\'' +
+                ", collectionCensoredName='" + collectionCensoredName + '\'' +
+                ", trackCensoredName='" + trackCensoredName + '\'' +
+                ", artistViewUrl='" + artistViewUrl + '\'' +
+                ", collectionViewUrl='" + collectionViewUrl + '\'' +
+                ", trackViewUrl='" + trackViewUrl + '\'' +
+                ", previewUrl='" + previewUrl + '\'' +
+                ", artworkUrl30='" + artworkUrl30 + '\'' +
+                ", artworkUrl60='" + artworkUrl60 + '\'' +
+                ", artworkUrl100='" + artworkUrl100 + '\'' +
+                ", collectionPrice=" + collectionPrice +
+                ", trackPrice=" + trackPrice +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", collectionExplicitness='" + collectionExplicitness + '\'' +
+                ", trackExplicitness='" + trackExplicitness + '\'' +
+                ", discCount=" + discCount +
+                ", discNumber=" + discNumber +
+                ", trackCount=" + trackCount +
+                ", trackNumber=" + trackNumber +
+                ", trackTimeMillis=" + trackTimeMillis +
+                ", country='" + country + '\'' +
+                ", currency='" + currency + '\'' +
+                ", primaryGenreName='" + primaryGenreName + '\'' +
+                ", isStreamable=" + isStreamable +
+                '}';
+    }
 }
